@@ -375,17 +375,17 @@ Industrial apps & Live web dashboard served at \texttt{/} \\
 \begin{tikzpicture}[node distance=0.7cm and 1.1cm]
   \node[box=orange!15, text width=3.0cm, minimum height=2.2cm] (sim)
     {\textbf{Sensor simulator}\\[2pt]\footnotesize 8 machines, every 2 s\\ random faults\\ store \& forward};
-  \node[box=blue!10, right=1.4cm of sim, text width=3.4cm, minimum height=3.6cm] (api)
+  \node[box=blue!10, right=2.3cm of sim, text width=3.4cm, minimum height=3.6cm] (api)
     {\textbf{FastAPI service}\\[4pt]\footnotesize
      ingestion \texttt{/api/readings}\\ assets \texttt{/api/assets}\\ alert rules\\ digital twin \texttt{/api/twin}\\ server metrics \texttt{/api/system}\\ dashboard \texttt{/}};
-  \node[box=gray!15, right=1.4cm of api, text width=3.0cm, minimum height=1.3cm, yshift=0.9cm] (pg)
+  \node[box=gray!15, right=1.9cm of api, text width=3.0cm, minimum height=1.3cm, yshift=0.9cm] (pg)
     {\textbf{PostgreSQL}\\\footnotesize container (Phases 1--2)};
   \node[box=purple!15, below=0.5cm of pg, text width=3.0cm, minimum height=1.3cm] (rds)
     {\textbf{AWS RDS}\\\footnotesize managed (Phase 3)};
   \node[box=green!15, below=1.3cm of api, text width=3.4cm] (ui) {\textbf{Browser dashboard}\\\footnotesize charts, alerts, health};
-  \draw[arr] (sim) -- node[above, font=\scriptsize]{HTTP POST} node[below, font=\scriptsize]{JSON batch} (api);
+  \draw[arr] (sim) -- node[above, font=\scriptsize]{HTTP} node[below, font=\scriptsize]{JSON} (api);
   \draw[arr] (api.east |- pg.west) -- (pg.west);
-  \draw[arr, dashed] (api.east |- rds.west) -- node[below, font=\scriptsize, pos=0.5]{same SQL} (rds.west);
+  \draw[arr, dashed] (api.east |- rds.west) -- node[above, font=\scriptsize, pos=0.5]{same SQL} (rds.west);
   \draw[arr] (api) -- node[right, font=\scriptsize]{polls every 3 s} (ui);
   \begin{scope}[on background layer]
     \node[layer, fit=(api)(pg)(rds), label={[font=\small\bfseries]above:Docker Compose stack on one server}] {};
@@ -486,9 +486,9 @@ start-up. The RDS instance itself took several minutes for AWS to provision.
 \centering
 \begin{tikzpicture}[node distance=0.6cm and 0.8cm, every node/.style={font=\small}]
   \node[box=yellow!20, text width=2.6cm, minimum height=1.4cm] (lap) {\textbf{Laptop}\\\footnotesize Gujarat, India\\ code + load tests};
-  \node[box=gray!10, right=1.1cm of lap, text width=1.8cm] (gh) {\textbf{GitHub}\\\footnotesize repository};
+  \node[box=gray!10, right=1.5cm of lap, text width=1.8cm] (gh) {\textbf{GitHub}\\\footnotesize repository};
   % Mumbai VPS
-  \node[box=red!10, above right=0.4cm and 4.3cm of lap, text width=3.3cm, minimum height=1.4cm] (mvps)
+  \node[box=red!10, above right=0.4cm and 4.0cm of lap, text width=3.8cm, minimum height=1.4cm] (mvps)
     {\textbf{Mumbai VPS}\\\footnotesize Hostinger, 4 vCPU / 16 GB\\ API + sim + PostgreSQL};
   % AWS region
   \node[box=blue!10, below=1.1cm of mvps, text width=3.3cm, minimum height=1.2cm] (ec2)
@@ -498,6 +498,7 @@ start-up. The RDS instance itself took several minutes for AWS to provision.
   \node[box=blue!5, below=0.5cm of rds, text width=3.3cm, minimum height=1.0cm] (med)
     {\textbf{EC2 t3.medium}\\\footnotesize same-size test, terminated};
   \draw[arr] (ec2) -- (rds);
+  \draw[arr] (lap) -- node[above, font=\scriptsize]{git push} (gh);
   % Africa
   \node[box=orange!15, below=4.6cm of lap, text width=3.0cm, minimum height=1.4cm] (afr)
     {\textbf{Africa VPS}\\\footnotesize 3 vCPU / 4 GB\\ API + sim + PostgreSQL};
