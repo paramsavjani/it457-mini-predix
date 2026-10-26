@@ -1,0 +1,14 @@
+# Phase 3 (refactor): use a managed database (AWS RDS) instead of the
+# PostgreSQL container. Only the connection string changes; the app code
+# stays the same.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.rds.yml up -d
+services:
+  db:
+    # keep the local database out of this deployment
+    profiles: ["local-db"]
+
+  api:
+    depends_on: !reset {}
+    environment:
+      DATABASE_URL: ${RDS_DATABASE_URL:?set RDS_DATABASE_URL in .env}
