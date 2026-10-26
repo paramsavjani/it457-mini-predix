@@ -3,11 +3,12 @@
 Plays the role of Predix Cloud: receives sensor readings from the edge
 (our simulator), stores them, and serves them to the dashboard.
 """
+import time
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
-from . import alerts, assets, config, db, readings, twin
+from . import alerts, assets, config, db, readings, system, twin
 
 
 @asynccontextmanager
@@ -24,6 +25,18 @@ app.include_router(assets.router)
 app.include_router(readings.router)
 app.include_router(alerts.router)
 app.include_router(twin.router)
+app.include_router(system.router)
+
+
+@app.middleware("http")
+async def time_requests(request: Request, call_next):
+    """Measure server-side processing time, separate from network latency."""
+    start = time.perf_counter()
+    response = await call_next(request)
+    elapsed_ms = (time.perf_counter() - start) * 1000
+    system.record_request(elapsed_ms)
+    response.headers["X-Process-Time-Ms"] = f"{elapsed_ms:.2f}"
+    return response
 
 
 @app.get("/health")
