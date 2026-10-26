@@ -1,0 +1,83 @@
+{
+  "_note": "Monthly costs in USD. AWS prices are on-demand, Asia Pacific (Mumbai), Linux, taken from the AWS public price list API on 2026-10-26. 1 month = 730 hours.",
+  "hours_per_month": 730,
+  "aws_prices": {
+    "ec2_hourly": {
+      "t3.micro": 0.0112,
+      "t3.medium": 0.0448,
+      "t3.large": 0.0896,
+      "t3.xlarge": 0.1792,
+      "m6a.xlarge": 0.1111,
+      "t4g.medium": 0.0224
+    },
+    "ec2_reserved_monthly_effective": {
+      "_note": "Standard reserved instances, amortised monthly cost",
+      "t3.medium": {
+        "1yr_no_upfront": 20.59,
+        "3yr_all_upfront": 12.03
+      },
+      "t3.large": {
+        "1yr_no_upfront": 41.17,
+        "3yr_all_upfront": 24.03
+      },
+      "t3.xlarge": {
+        "1yr_no_upfront": 82.42,
+        "3yr_all_upfront": 48.06
+      },
+      "m6a.xlarge": {
+        "1yr_no_upfront": 53.56,
+        "3yr_all_upfront": 32.11
+      }
+    },
+    "rds_postgres_hourly": {
+      "db.t4g.micro": 0.021,
+      "db.t4g.small": 0.042,
+      "db.t4g.medium": 0.084,
+      "db.t4g.large": 0.167,
+      "db.t4g.micro_multi_az": 0.042,
+      "db.t4g.medium_multi_az": 0.167
+    },
+    "ebs_gp3_gb_month": 0.0912,
+    "rds_storage_gb_month": 0.131,
+    "rds_storage_multi_az_gb_month": 0.262,
+    "rds_backup_gb_month_beyond_free": 0.095,
+    "data_transfer_out_gb": 0.1093,
+    "data_transfer_free_gb": 100,
+    "alb_hourly": 0.0239,
+    "alb_lcu_hourly": 0.008
+  },
+  "vps": {
+    "_note": "Monthly prices given by the team in INR; converted at usd_inr.",
+    "usd_inr": 96.5,
+    "vps-mumbai-16gb": {
+      "vcpu": 4,
+      "ram_gb": 16,
+      "location": "Mumbai",
+      "provider": "Hostinger",
+      "monthly_inr": 2399,
+      "disk_gb": 193,
+      "tested": true
+    },
+    "vps-africa-4gb": {
+      "vcpu": 3,
+      "ram_gb": 4,
+      "location": "Africa",
+      "monthly_inr": 1700,
+      "disk_gb": 72,
+      "tested": true
+    },
+    "vps-africa-8gb": {
+      "vcpu": 4,
+      "ram_gb": 8,
+      "location": "Africa",
+      "monthly_inr": 4667,
+      "disk_gb": 242,
+      "tested": false,
+      "billing": "14000 INR per 3 months"
+    }
+  },
+  "assumptions": {
+    "disk_gb": 20,
+    "monthly_egress_gb": 200
+  }
+}
