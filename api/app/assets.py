@@ -17,13 +17,12 @@ SEED_ASSETS = [
 ]
 
 
-def seed_assets() -> None:
-    with db.pool.connection() as conn:
-        conn.cursor().executemany(
-            """INSERT INTO assets (id, name, asset_type, location)
-               VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING""",
-            SEED_ASSETS,
-        )
+def seed_assets(conn) -> None:
+    conn.cursor().executemany(
+        """INSERT INTO assets (id, name, asset_type, location)
+           VALUES (%s, %s, %s, %s) ON CONFLICT (id) DO NOTHING""",
+        SEED_ASSETS,
+    )
 
 
 @router.get("")

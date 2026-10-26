@@ -19,7 +19,7 @@ from datetime import datetime, timezone
 API_URL = os.getenv("API_URL", "http://localhost:8090").rstrip("/")
 TURBINES = int(os.getenv("SIM_TURBINES", "6"))
 INTERVAL = float(os.getenv("SIM_INTERVAL_SECONDS", "2"))
-FAULT_PROBABILITY = float(os.getenv("SIM_FAULT_PROBABILITY", "0.02"))
+FAULT_PROBABILITY = float(os.getenv("SIM_FAULT_PROBABILITY", "0.005"))
 BUFFER_LIMIT = 500  # batches kept while the API is unreachable
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -35,12 +35,13 @@ NORMAL = {
 
 
 # Fault types: metric -> amount added per tick while the fault is active.
-# "overheating" ramps up slowly so the digital twin can predict it early.
+# Faults ramp up over a few minutes so the digital twin can predict them early
+# (overheating: +0.4 C per tick = +12 C per minute at the default 2 s interval).
 FAULTS = {
-    "overheating": {"temperature": 1.5},
-    "bearing_wear": {"vibration": 0.35, "temperature": 0.3},
-    "overspeed": {"rpm": 45.0},
-    "pressure_leak": {"pressure": 0.6},
+    "overheating": {"temperature": 0.4},
+    "bearing_wear": {"vibration": 0.06, "temperature": 0.1},
+    "overspeed": {"rpm": 10.0},
+    "pressure_leak": {"pressure": 0.12},
 }
 
 
@@ -55,7 +56,7 @@ class Machine:
     def update_fault(self) -> None:
         if self.fault is None and random.random() < FAULT_PROBABILITY:
             self.fault = random.choice(list(FAULTS))
-            self.fault_ticks = random.randint(15, 40)
+            self.fault_ticks = random.randint(40, 110)
             log.info("%s: fault started (%s, %d ticks)", self.asset_id, self.fault, self.fault_ticks)
         if self.fault is not None:
             for metric, step in FAULTS[self.fault].items():

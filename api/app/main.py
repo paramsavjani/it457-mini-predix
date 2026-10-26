@@ -17,8 +17,7 @@ from . import alerts, assets, config, db, readings, system, twin
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db.open_pool()
-    db.init_schema()
-    assets.seed_assets()
+    db.init_schema(seed=assets.seed_assets)
     yield
     db.pool.close()
 

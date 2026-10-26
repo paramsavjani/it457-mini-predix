@@ -28,10 +28,20 @@ def open_pool(retries: int = 30) -> None:
             time.sleep(2)
 
 
-def init_schema() -> None:
+SCHEMA_LOCK_ID = 457027  # any constant; shared by every API worker
+
+
+def init_schema(seed=None) -> None:
+    """Create tables (and seed data) once, even with several workers starting together."""
     sql = (Path(__file__).parent / "schema.sql").read_text()
     with pool.connection() as conn:
-        conn.execute(sql)
+        conn.execute("SELECT pg_advisory_lock(%s)", (SCHEMA_LOCK_ID,))
+        try:
+            conn.execute(sql)
+            if seed:
+                seed(conn)
+        finally:
+            conn.execute("SELECT pg_advisory_unlock(%s)", (SCHEMA_LOCK_ID,))
 
 
 def fetch_all(query: str, params: tuple | dict = ()) -> list[dict]:

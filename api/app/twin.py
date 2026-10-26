@@ -55,7 +55,8 @@ def compute_health(rows: list[dict]) -> dict:
     crit_temp = THRESHOLDS["temperature"][1]
     current = rows[-1]["temperature"]
     minutes_to_critical = None
-    if trend > 0.05 and current < crit_temp:
+    # ignore small slopes: with ~1 degree of sensor noise they are not a real trend
+    if len(rows) >= 10 and trend > 0.5 and current < crit_temp:
         minutes_to_critical = round((crit_temp - current) / trend, 1)
         if minutes_to_critical < 30:
             penalty += 15.0
