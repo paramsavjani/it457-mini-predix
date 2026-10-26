@@ -1,0 +1,154 @@
+{
+  "label": "aws-ec2-t3medium-localhost",
+  "url": "http://localhost:8090",
+  "time": "2026-10-26T20:19:58+00:00",
+  "duration_per_level_s": 20,
+  "server": {
+    "host": "bf3876253018",
+    "cpu_count": 2,
+    "memory": {
+      "total_mb": 3831,
+      "used_mb": 845,
+      "used_percent": 22.1
+    },
+    "deployment": "aws-ec2-t3medium"
+  },
+  "network_rtt": {
+    "median_ms": 2.2,
+    "min_ms": 2.1
+  },
+  "levels": [
+    {
+      "users": 1,
+      "requests": 3117,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 155.8,
+      "latency_ms": {
+        "mean": 6.41,
+        "p50": 5.9,
+        "p95": 9.8,
+        "p99": 13.1
+      },
+      "read_p50_ms": 7.6,
+      "write_p50_ms": 5.4,
+      "server_ms_mean": 4.23,
+      "server": {
+        "load_1m_max": 0.3369140625,
+        "cpu_mean": 50.01,
+        "cpu_max": 58.8,
+        "mem_percent_mean": 22.19
+      }
+    },
+    {
+      "users": 5,
+      "requests": 3680,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 183.8,
+      "latency_ms": {
+        "mean": 27.17,
+        "p50": 22.9,
+        "p95": 59.7,
+        "p99": 82.5
+      },
+      "read_p50_ms": 28.7,
+      "write_p50_ms": 17.8,
+      "server_ms_mean": 20.16,
+      "server": {
+        "load_1m_max": 2.08056640625,
+        "cpu_mean": 88.54,
+        "cpu_max": 99.5,
+        "mem_percent_mean": 22.38
+      }
+    },
+    {
+      "users": 10,
+      "requests": 3469,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 173.1,
+      "latency_ms": {
+        "mean": 57.71,
+        "p50": 33.6,
+        "p95": 184.4,
+        "p99": 215.1
+      },
+      "read_p50_ms": 43.2,
+      "write_p50_ms": 25.6,
+      "server_ms_mean": 48.02,
+      "server": {
+        "load_1m_max": 4.357421875,
+        "cpu_mean": 92.86,
+        "cpu_max": 100.0,
+        "mem_percent_mean": 22.58
+      }
+    },
+    {
+      "users": 25,
+      "requests": 2836,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 140.8,
+      "latency_ms": {
+        "mean": 176.79,
+        "p50": 92.7,
+        "p95": 479.8,
+        "p99": 676.4
+      },
+      "read_p50_ms": 157.9,
+      "write_p50_ms": 68.0,
+      "server_ms_mean": 119.71,
+      "server": {
+        "load_1m_max": 5.77880859375,
+        "cpu_mean": 91.77,
+        "cpu_max": 100.0,
+        "mem_percent_mean": 22.88
+      }
+    },
+    {
+      "users": 50,
+      "requests": 1835,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 90.2,
+      "latency_ms": {
+        "mean": 549.33,
+        "p50": 365.1,
+        "p95": 1637.9,
+        "p99": 2313.5
+      },
+      "read_p50_ms": 381.1,
+      "write_p50_ms": 331.3,
+      "server_ms_mean": 68.61,
+      "server": {
+        "load_1m_max": 7.109375,
+        "cpu_mean": 84.4,
+        "cpu_max": 99.8,
+        "mem_percent_mean": 23.06
+      }
+    },
+    {
+      "users": 100,
+      "requests": 1579,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 75.8,
+      "latency_ms": {
+        "mean": 1291.66,
+        "p50": 926.5,
+        "p95": 3938.0,
+        "p99": 5540.2
+      },
+      "read_p50_ms": 949.7,
+      "write_p50_ms": 843.7,
+      "server_ms_mean": 123.98,
+      "server": {
+        "load_1m_max": 5.82275390625,
+        "cpu_mean": 80.67,
+        "cpu_max": 98.2,
+        "mem_percent_mean": 23.31
+      }
+    }
+  ]
+}
