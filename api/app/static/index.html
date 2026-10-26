@@ -29,8 +29,24 @@
   <h2>Fleet health <span class="hint">digital twin score, updated every 3 s</span></h2>
   <section class="fleet" id="fleet"></section>
 
+  <section class="grid2">
+    <div class="panel">
+      <h2 id="chart-title">Sensor history</h2>
+      <div class="chart-box"><canvas id="chart-temp"></canvas></div>
+      <div class="chart-box"><canvas id="chart-vib"></canvas></div>
+    </div>
+    <div class="panel">
+      <h2>Recent alerts</h2>
+      <table>
+        <thead><tr><th>Time</th><th>Asset</th><th>Severity</th><th>Message</th></tr></thead>
+        <tbody id="alerts"><tr><td colspan="4" class="empty">No alerts yet</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
   <footer>Data from the turbine simulator &rarr; ingestion API &rarr; PostgreSQL</footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>
