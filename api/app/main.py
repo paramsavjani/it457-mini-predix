@@ -7,18 +7,20 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from . import config, db
+from . import assets, config, db
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     db.open_pool()
     db.init_schema()
+    assets.seed_assets()
     yield
     db.pool.close()
 
 
 app = FastAPI(title="Mini-Predix API", version="1.0.0", lifespan=lifespan)
+app.include_router(assets.router)
 
 
 @app.get("/health")
