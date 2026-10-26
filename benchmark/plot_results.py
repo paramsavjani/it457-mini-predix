@@ -72,13 +72,26 @@ def main() -> None:
     reports = load(paths)
     GRAPHS.mkdir(parents=True, exist_ok=True)
 
-    made = [
-        plot(reports, "Median response time", "p50 latency (ms)", lambda l: l["latency_ms"]["p50"], "latency_p50.png"),
-        plot(reports, "95th percentile response time", "p95 latency (ms)", lambda l: l["latency_ms"]["p95"], "latency_p95.png"),
-        plot(reports, "Throughput", "Successful requests / second", lambda l: l["rps"], "throughput.png"),
-        plot(reports, "Server processing time (excludes network)", "Mean server time (ms)", lambda l: l["server_ms_mean"], "server_time.png"),
-        plot(reports, "Server CPU during test", "Mean CPU (%)", lambda l: l["server"]["cpu_mean"], "cpu.png"),
-    ]
+    # "-localhost" runs were made on the server itself (server capacity);
+    # the others went over the internet from a laptop (what users feel).
+    groups = {
+        "internet": ("over the internet", [r for r in reports if not r["label"].endswith("-localhost")]),
+        "onserver": ("on the server", [r for r in reports if r["label"].endswith("-localhost")]),
+    }
+    made = []
+    for key, (where, group) in groups.items():
+        if not group:
+            continue
+        made += [
+            plot(group, f"Median response time ({where})", "p50 latency (ms)",
+                 lambda l: l["latency_ms"]["p50"], f"{key}_latency_p50.png"),
+            plot(group, f"95th percentile response time ({where})", "p95 latency (ms)",
+                 lambda l: l["latency_ms"]["p95"], f"{key}_latency_p95.png"),
+            plot(group, f"Throughput ({where})", "Successful requests / second",
+                 lambda l: l["rps"], f"{key}_throughput.png"),
+            plot(group, f"Server CPU during test ({where})", "Mean CPU (%)",
+                 lambda l: l["server"]["cpu_mean"], f"{key}_cpu.png"),
+        ]
     table = markdown_table(reports)
     (RESULTS / "summary.md").write_text(table + "\n")
     print(table)
