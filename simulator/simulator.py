@@ -1,0 +1,93 @@
+"""Turbine sensor simulator: the "edge" of Mini-Predix.
+
+Each virtual machine produces temperature, vibration, RPM and pressure
+readings that drift slowly around a normal operating point. Every interval
+the simulator sends one batch with a reading per machine to the API,
+like a Predix Machine gateway forwarding data to the cloud.
+"""
+import json
+import logging
+import os
+import random
+import time
+import urllib.error
+import urllib.request
+from collections import deque
+from dataclasses import dataclass, field
+
+API_URL = os.getenv("API_URL", "http://localhost:8090").rstrip("/")
+TURBINES = int(os.getenv("SIM_TURBINES", "6"))
+INTERVAL = float(os.getenv("SIM_INTERVAL_SECONDS", "2"))
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+log = logging.getLogger("simulator")
+
+# Normal operating point per metric: (mean, noise std dev)
+NORMAL = {
+    "temperature": (72.0, 0.8),
+    "vibration": (3.5, 0.25),
+    "rpm": (3000.0, 15.0),
+    "pressure": (21.0, 0.3),
+}
+
+
+@dataclass
+class Machine:
+    asset_id: str
+    drift: dict = field(default_factory=lambda: {m: 0.0 for m in NORMAL})
+
+    def read(self) -> dict:
+        values = {}
+        for metric, (mean, std) in NORMAL.items():
+            # slow random walk around the mean so the charts look realistic
+            self.drift[metric] = 0.95 * self.drift[metric] + random.gauss(0, std * 0.3)
+            values[metric] = round(mean + self.drift[metric] + random.gauss(0, std), 2)
+        return {"asset_id": self.asset_id, **values}
+
+
+def post_json(url: str, payload: dict) -> int:
+    req = urllib.request.Request(
+        url, data=json.dumps(payload).encode(), headers={"Content-Type": "application/json"}
+    )
+    with urllib.request.urlopen(req, timeout=10) as resp:
+        return resp.status
+
+
+def get_json(url: str):
+    with urllib.request.urlopen(url, timeout=10) as resp:
+        return json.load(resp)
+
+
+def wait_for_api() -> list[str]:
+    while True:
+        try:
+            return [a["id"] for a in get_json(f"{API_URL}/api/assets")]
+        except (urllib.error.URLError, OSError) as exc:
+            log.info("waiting for API at %s (%s)", API_URL, exc)
+            time.sleep(3)
+
+
+def main() -> None:
+    asset_ids = wait_for_api()[:TURBINES]
+    machines = [Machine(a) for a in asset_ids]
+    log.info("simulating %d machines every %.1fs -> %s", len(machines), INTERVAL, API_URL)
+
+    latencies: deque[float] = deque(maxlen=50)
+    sent = 0
+    while True:
+        batch = [m.read() for m in machines]
+        start = time.perf_counter()
+        try:
+            post_json(f"{API_URL}/api/readings", {"readings": batch})
+            latencies.append((time.perf_counter() - start) * 1000)
+            sent += 1
+            if sent % 30 == 0:
+                log.info("sent %d batches, avg latency %.1f ms", sent, sum(latencies) / len(latencies))
+        except (urllib.error.URLError, OSError) as exc:
+            # store-and-forward is out of scope: we log and try again next tick
+            log.warning("send failed: %s", exc)
+        time.sleep(INTERVAL)
+
+
+if __name__ == "__main__":
+    main()
