@@ -4,7 +4,7 @@ A small industrial IoT monitoring app based on the **GE Predix** case study (IT4
 
 Virtual turbines send sensor data to an API, which stores it, raises alerts and predicts failures with a simple digital twin. A live dashboard shows everything.
 
-**Live demo:** http://200.234.36.181:8090
+**Live demo:** http://200.234.36.181:8090 (Mumbai VPS) · http://13.203.224.195:8090 (AWS EC2 + RDS)
 
 ## How it works
 
@@ -29,14 +29,21 @@ docker compose up -d --build
 
 Open http://localhost:8090
 
-## Results (Mumbai VPS, 4 vCPU, 16 GB)
+## Results
 
-| Test | Peak throughput | Median response | Errors |
-|---|---|---|---|
-| From laptop (internet) | 155 req/s | 82 ms | 0% |
-| On the server | 379 req/s | 7 ms | 0% |
+| Deployment | Peak throughput | Monthly cost |
+|---|---|---|
+| Mumbai VPS (4 vCPU, 16 GB) | 379 req/s | ₹2,399 |
+| AWS t3.micro + RDS (managed DB) | 266 req/s | ₹3,752 |
+| Africa VPS (3 vCPU, 4 GB) | 193 req/s | ₹1,700 |
+| AWS t3.medium (2 vCPU, 4 GB) | 184 req/s | ₹4,387 |
+| AWS t3.micro (2 vCPU, 1 GB) | 113 req/s | ₹2,020 |
 
-Most of the delay for users is network time, not server time. Full results: [`benchmark/results/summary.md`](benchmark/results/summary.md)
+- Same-size machines perform about the same on a VPS and on AWS.
+- Moving the database to RDS made the small AWS server 2.4x faster.
+- The VPS is about 4x cheaper for steady load; AWS costs more but adds scaling, backups and failover.
+
+Full analysis: [`docs/analysis.md`](docs/analysis.md)
 
 ## Team
 
