@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mini-Predix Monitor</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Mini-Predix</h1>
+      <p class="sub">Industrial IoT monitoring &middot; IT457 Group 27</p>
+    </div>
+    <div class="deploy">
+      <span class="label">Deployment</span>
+      <span id="deployment">-</span>
+    </div>
+  </header>
+
+  <section class="stats" id="stats">
+    <div class="stat"><span class="label">Readings stored</span><span id="s-readings">-</span></div>
+    <div class="stat"><span class="label">Alerts raised</span><span id="s-alerts">-</span></div>
+    <div class="stat"><span class="label">Server load (1m)</span><span id="s-load">-</span></div>
+    <div class="stat"><span class="label">Memory used</span><span id="s-mem">-</span></div>
+    <div class="stat"><span class="label">API latency</span><span id="s-latency">-</span></div>
+  </section>
+
+  <h2>Fleet health <span class="hint">digital twin score, updated every 3 s</span></h2>
+  <section class="fleet" id="fleet"></section>
+
+  <footer>Data from the turbine simulator &rarr; ingestion API &rarr; PostgreSQL</footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
