@@ -1,0 +1,132 @@
+{
+  "label": "vps-mumbai-16gb",
+  "url": "http://200.234.36.181:8090",
+  "time": "2026-10-26T18:16:38+00:00",
+  "duration_per_level_s": 20,
+  "server": {
+    "host": "4da5a1d51ce8",
+    "cpu_count": 4,
+    "memory": {
+      "total_mb": 15987,
+      "used_mb": 6643,
+      "used_percent": 41.6
+    },
+    "deployment": "vps-mumbai-16gb"
+  },
+  "network_rtt": {
+    "median_ms": 78.3,
+    "min_ms": 72.7
+  },
+  "levels": [
+    {
+      "users": 1,
+      "requests": 199,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 9.9,
+      "latency_ms": {
+        "mean": 100.82,
+        "p50": 82.5,
+        "p95": 147.5,
+        "p99": 203.9
+      },
+      "read_p50_ms": 79.7,
+      "write_p50_ms": 125.6,
+      "server_ms_mean": 18.2,
+      "server": {
+        "load_1m_max": 1.828125,
+        "cpu_mean": 24.2,
+        "cpu_max": 53.8,
+        "mem_percent_mean": 41.29
+      }
+    },
+    {
+      "users": 5,
+      "requests": 822,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 39.1,
+      "latency_ms": {
+        "mean": 123.16,
+        "p50": 106.9,
+        "p95": 187.1,
+        "p99": 204.0
+      },
+      "read_p50_ms": 94.5,
+      "write_p50_ms": 168.7,
+      "server_ms_mean": 24.06,
+      "server": {
+        "load_1m_max": 1.76171875,
+        "cpu_mean": 21.55,
+        "cpu_max": 31.8,
+        "mem_percent_mean": 41.53
+      }
+    },
+    {
+      "users": 10,
+      "requests": 1580,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 78.5,
+      "latency_ms": {
+        "mean": 126.97,
+        "p50": 111.4,
+        "p95": 201.7,
+        "p99": 243.0
+      },
+      "read_p50_ms": 98.9,
+      "write_p50_ms": 147.2,
+      "server_ms_mean": 23.46,
+      "server": {
+        "load_1m_max": 2.02490234375,
+        "cpu_mean": 24.39,
+        "cpu_max": 35.3,
+        "mem_percent_mean": 41.69
+      }
+    },
+    {
+      "users": 25,
+      "requests": 3175,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 155.1,
+      "latency_ms": {
+        "mean": 157.97,
+        "p50": 133.5,
+        "p95": 261.6,
+        "p99": 481.8
+      },
+      "read_p50_ms": 117.3,
+      "write_p50_ms": 180.7,
+      "server_ms_mean": 25.77,
+      "server": {
+        "load_1m_max": 1.93896484375,
+        "cpu_mean": 37.8,
+        "cpu_max": 60.6,
+        "mem_percent_mean": 41.7
+      }
+    },
+    {
+      "users": 50,
+      "requests": 1304,
+      "errors": 0,
+      "error_rate": 0.0,
+      "rps": 63.2,
+      "latency_ms": {
+        "mean": 776.42,
+        "p50": 321.1,
+        "p95": 2726.5,
+        "p99": 4311.2
+      },
+      "read_p50_ms": 279.5,
+      "write_p50_ms": 357.4,
+      "server_ms_mean": 24.83,
+      "server": {
+        "load_1m_max": 2.13134765625,
+        "cpu_mean": 22.76,
+        "cpu_max": 30.7,
+        "mem_percent_mean": 41.72
+      }
+    }
+  ]
+}

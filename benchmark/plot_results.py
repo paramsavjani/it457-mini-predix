@@ -54,7 +54,7 @@ def markdown_table(reports: list[dict]) -> str:
             lines.append(
                 f"| {r['label']} | {lvl['users']} | {lvl['rps']} | {lat['p50']} | {lat['p95']} | "
                 f"{lat['p99']} | {lvl['error_rate']:.1%} | {lvl['server_ms_mean']} | "
-                f"{srv['cpu_mean']} | {srv['load_1m_max']} |"
+                f"{srv['cpu_mean']} | {srv['load_1m_max']:.2f} |"
             )
     lines.append("")
     lines.append("| Deployment | CPUs | RAM (MB) | Network RTT (ms) |")
