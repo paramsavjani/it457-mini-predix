@@ -1,0 +1,94 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+
+\setlist{itemsep=4pt,topsep=4pt,leftmargin=1.5em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\linespread{1.1}
+\pagestyle{plain}
+\newcommand{\sect}[1]{\vspace{12pt}{\Large\bfseries\color{blue!50!black}#1}\par\vspace{4pt}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries GE Predix: Industrial IoT Cloud Platform}\\[8pt]
+{\large IT457 Cloud Computing \textbullet{} Case Study Project \textbullet{} Week 1 Summary}\\[6pt]
+Group 27 \textbullet{} Theme: Migration \& Transformation\\[2pt]
+Members: 202303009, 202303046 (Param), 202301436
+\end{center}
+\rule{\linewidth}{0.4pt}
+
+\sect{1. Background}
+General Electric (GE) makes heavy industrial machines: jet engines, gas turbines, locomotives and medical scanners.
+Around 2013 GE launched \textbf{Predix}, a software platform for the \emph{Industrial Internet of Things (IIoT)}, and in
+August 2015 announced \textbf{Predix Cloud}, a Platform-as-a-Service built for industrial data and analytics [1].
+GE Digital was formed in 2015 with the goal of turning GE into a top software company. In parallel, GE's corporate IT
+began moving its own workloads out of its data centers onto \textbf{AWS} [4,5].
+
+\sect{2. Problem}
+\begin{itemize}
+  \item Industrial assets generate huge volumes of sensor data (temperature, vibration, pressure) that sat unused in silos.
+  \item Customers wanted \emph{predictive maintenance}: detecting failures before they happen to cut unplanned downtime.
+  \item GE ran a large, costly on-premises estate: about \textbf{9,000 workloads across 34 data centers} (2015) [4].
+\end{itemize}
+
+\sect{3. Solution and Architecture}
+\begin{itemize}
+  \item \textbf{Edge:} \emph{Predix Machine / Predix Edge} gateways sit next to machines, collect sensor data over
+        industrial protocols (OPC-UA, Modbus, MQTT), run local analytics, and store-and-forward data when offline [6].
+  \item \textbf{Cloud PaaS:} built on \textbf{Cloud Foundry} (Pivotal) as a microservices platform [1,2]. Core services:
+        \emph{Time-Series} (ingest/store sensor data), \emph{Asset} (models machine hierarchy), \emph{UAA} security,
+        analytics runtime and UI components [6].
+  \item \textbf{Digital Twin:} a software model of each physical asset combining live data, configuration and
+        physics/ML models to predict its future state [6].
+  \item \textbf{Hosting:} production initially in GE's own Predix data centers; later made available on public clouds
+        (AWS, Microsoft Azure) [3].
+  \item \textbf{IT migration:} GE adopted a cloud-first strategy and in 2017 named AWS its preferred cloud provider,
+        having migrated 2,000+ applications by then [5].
+\end{itemize}
+
+\sect{4. Cost and Outcome}
+\begin{itemize}
+  \item \textbf{Targets:} digital revenue of \$15B by 2020 was promised, later cut to \$12B [7].
+  \item \textbf{Problems:} in 2017 Predix was reported as not mature or battle-tested at scale and had a ``time-out''
+        from the market to fix technical issues; most revenue came from GE's own business units [7,8].
+  \item \textbf{Restructuring:} in 2018 GE refocused Predix on its Power, Aviation and Healthcare businesses and aimed to cut
+        platform costs by about \$400M [8]. In Dec 2018 it planned a separate IIoT software company (\$1.2B revenue), but
+        in Oct 2019 decided to keep GE Digital in-house with a narrower vertical focus [9].
+  \item \textbf{IT side:} the AWS migration continued successfully, reducing GE's need to build and run data centers [5].
+\end{itemize}
+
+\sect{5. Key Takeaways}
+\begin{itemize}
+  \item Edge-plus-cloud is the right pattern for IIoT: filter at the edge, store and analyse in the cloud.
+  \item Building your own cloud infrastructure is expensive. GE eventually leaned on AWS/Azure instead of competing with them.
+  \item Migration to managed cloud services reduced operational burden. This is what our hands-on exercise will measure.
+  \item Over-ambitious, general-purpose platform goals failed. A focused, vertical approach worked better.
+\end{itemize}
+
+\sect{6. Planned Exercise (Migration theme)}
+A small IoT telemetry app (sensor simulator $\rightarrow$ ingestion API $\rightarrow$ database $\rightarrow$ dashboard)
+in \textbf{Docker}. We will lift-and-shift it to a \textbf{cloud VM}, then refactor parts to \textbf{managed services}
+(e.g.\ AWS RDS, IoT Core/Lambda). We will compare effort, monthly cost, latency and resilience, and host it live.
+
+\sect{7. Sources}
+{\normalsize
+\begin{enumerate}[label={[\arabic*]},leftmargin=2.2em,itemsep=6pt]
+  \item GE Press Release, ``GE Announces Predix Cloud'', Aug 2015. \url{https://www.ge.com/news/press-releases/ge-announces-predix-cloud-worlds-first-cloud-service-built-industrial-data-and}
+  \item Cloud Foundry Foundation, ``A Platform for the Internet of Very Important Things''. \url{https://www.cloudfoundry.org/blog/a-platform-for-the-internet-of-very-important-things/}
+  \item Data Center Knowledge, ``GE Unveils Predix, Its Industrial Strength Cloud'', 2015. \url{https://www.datacenterknowledge.com/cloud/ge-unveils-predix-its-industrial-strength-cloud}
+  \item Constellation Research, ``GE, Capital One Give AWS the Rub at re:Invent'', 2015. \url{https://www.constellationr.com/content/ge-capital-one-give-aws-rub-reinvent}
+  \item Amazon Press, ``General Electric Names AWS Its Preferred Cloud Provider'', Oct 2017. \url{https://press.aboutamazon.com/2017/10/general-electric-names-aws-its-preferred-cloud-provider}
+  \item GE Digital, ``Predix Platform for the Industrial Internet'' Datasheet. \url{https://www.ge.com/digital/sites/default/files/download_assets/Predix-Platform-for-the-Industrial-Internet-Datasheet.pdf}
+  \item CIO Dive, ``Have GE's Digital Transformation Efforts Hit a Snag?'', 2017. \url{https://www.ciodive.com/news/have-ges-digital-transformation-efforts-hit-a-snag/503736/}
+  \item CIO Dive, ``GE to Scale Back Predix amid Companywide Restructure'', 2017. \url{https://www.ciodive.com/news/ge-to-scale-back-predix-amid-companywide-restructure/510758/}
+  \item POWER Magazine, ``GE Shelves Plans to Spin Off Digital Business'', 2019. \url{https://www.powermag.com/ge-shelves-plans-to-spin-off-digital-business/}
+\end{enumerate}
+}
+\end{document}
