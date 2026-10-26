@@ -1,0 +1,48 @@
+# Full Mini-Predix stack: database + API/dashboard + sensor simulator.
+# Phase 1 runs this on a laptop, Phase 2 runs the same file on a cloud VM.
+name: mini-predix
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-predix}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-predix}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-predix} -d ${POSTGRES_DB:-predix}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Phase 3 points DATABASE_URL at a managed database (e.g. AWS RDS) instead
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-predix}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-predix}}
+      DEPLOYMENT_NAME: ${DEPLOYMENT_NAME:-local-docker}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
+    ports:
+      - "${API_PORT:-8090}:8000"
+
+  simulator:
+    build: ./simulator
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    environment:
+      API_URL: http://api:8000
+      SIM_TURBINES: ${SIM_TURBINES:-6}
+      SIM_INTERVAL_SECONDS: ${SIM_INTERVAL_SECONDS:-2}
+      SIM_FAULT_PROBABILITY: ${SIM_FAULT_PROBABILITY:-0.02}
+
+volumes:
+  pgdata:
