@@ -4,7 +4,7 @@ A small industrial IoT monitoring app based on the **GE Predix** case study (IT4
 
 Virtual turbines send sensor data to an API, which stores it, raises alerts and predicts failures with a simple digital twin. A live dashboard shows everything.
 
-**Live demo:** http://200.234.36.181:8090 (Mumbai VPS) · http://13.203.224.195:8090 (AWS EC2 + RDS)
+**Live demo:** http://200.234.36.181:8090 (Mumbai VPS). The AWS EC2 + RDS deployment was removed after testing to stop charges.
 
 ## How it works
 
