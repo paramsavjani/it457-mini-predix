@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from . import assets, config, db, readings
+from . import alerts, assets, config, db, readings
 
 
 @asynccontextmanager
@@ -22,6 +22,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Mini-Predix API", version="1.0.0", lifespan=lifespan)
 app.include_router(assets.router)
 app.include_router(readings.router)
+app.include_router(alerts.router)
 
 
 @app.get("/health")

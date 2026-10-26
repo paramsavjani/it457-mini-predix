@@ -4,7 +4,8 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from . import db
+from . import db, rules
+from .alerts import store_alerts
 
 router = APIRouter(prefix="/api/readings", tags=["readings"])
 
@@ -33,6 +34,10 @@ def store_readings(readings: list[Reading]) -> None:
                VALUES (%s, COALESCE(%s, now()), %s, %s, %s, %s)""",
             [(r.asset_id, r.ts, r.temperature, r.vibration, r.rpm, r.pressure) for r in readings],
         )
+        alerts = []
+        for r in readings:
+            alerts += rules.evaluate(r.asset_id, r.model_dump(exclude={"asset_id", "ts"}))
+        store_alerts(conn, alerts)
 
 
 @router.post("", status_code=201)
