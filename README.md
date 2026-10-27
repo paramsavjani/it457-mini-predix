@@ -47,8 +47,8 @@ Full analysis: [`docs/analysis.md`](docs/analysis.md)
 
 ## Team
 
-| Student ID | Name |
-|---|---|
-| 202303009 | |
-| 202303046 | Param |
-| 202301436 | |
+| Student ID | Name | Role |
+|---|---|---|
+| 202303009 | Nidhi Dodiya | Application code (simulator, API, dashboard, Docker) |
+| 202303046 | Param Savjani | Cloud deployment and testing (VPS, AWS EC2/RDS, benchmarks, cost) |
+| 202301436 | Vraj Makmana | Research and documentation (case study, reports, diagrams) |
