@@ -51,4 +51,4 @@ Full analysis: [`docs/analysis.md`](docs/analysis.md)
 |---|---|---|
 | 202303009 | Nidhi Dodiya | Application code (simulator, API, dashboard, Docker) |
 | 202303046 | Param Savjani | Cloud deployment and testing (VPS, AWS EC2/RDS, benchmarks, cost) |
-| 202301436 | Vraj Makmana | Research and documentation (case study, reports, diagrams) |
+| 202301436 | Vraj Makwana | Research and documentation (case study, reports, diagrams) |
