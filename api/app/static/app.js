@@ -9,6 +9,12 @@ async function getJSON(url) {
   return { data, ms: performance.now() - start };
 }
 
+function esc(text) {
+  return String(text ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  })[c]);
+}
+
 function fmt(n, digits = 1) {
   return n === null || n === undefined ? "-" : Number(n).toFixed(digits);
 }
@@ -34,9 +40,9 @@ async function refreshFleet() {
       ? `Predicted critical in ~${fmt(a.minutes_to_critical, 0)} min`
       : "";
     return `
-      <div class="card ${a.id === selected ? "selected" : ""}" data-id="${a.id}">
+      <div class="card ${a.id === selected ? "selected" : ""}" data-id="${esc(a.id)}">
         <div class="top">
-          <span class="name">${a.name}</span>
+          <span class="name">${esc(a.name)}</span>
           <span class="pill ${a.status}">${a.status}</span>
         </div>
         <div class="score ${a.status}">${a.health ?? "-"}</div>
@@ -98,9 +104,9 @@ async function refreshAlerts() {
   document.getElementById("alerts").innerHTML = data.map(a => `
     <tr>
       <td>${new Date(a.ts).toLocaleTimeString()}</td>
-      <td>${a.asset_id}</td>
-      <td class="${a.severity === "critical" ? "critical" : "degraded"}">${a.severity}</td>
-      <td>${a.message}</td>
+      <td>${esc(a.asset_id)}</td>
+      <td class="${a.severity === "critical" ? "critical" : "degraded"}">${esc(a.severity)}</td>
+      <td>${esc(a.message)}</td>
     </tr>`).join("");
 }
 
