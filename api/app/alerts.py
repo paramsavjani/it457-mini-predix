@@ -18,5 +18,15 @@ def store_alerts(conn, alerts: list[Alert]) -> None:
 
 
 @router.get("")
-def list_alerts(limit: int = Query(default=20, ge=1, le=200)):
-    return db.fetch_all("SELECT * FROM alerts ORDER BY ts DESC LIMIT %s", (limit,))
+def list_alerts(
+    limit: int = Query(default=20, ge=1, le=200),
+    asset_id: str | None = None,
+    severity: str | None = Query(default=None, pattern="^(warning|critical)$"),
+):
+    return db.fetch_all(
+        """SELECT * FROM alerts
+           WHERE (%(asset)s::text IS NULL OR asset_id = %(asset)s)
+             AND (%(sev)s::text IS NULL OR severity = %(sev)s)
+           ORDER BY ts DESC LIMIT %(limit)s""",
+        {"asset": asset_id, "sev": severity, "limit": limit},
+    )
