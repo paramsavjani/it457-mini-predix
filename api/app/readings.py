@@ -13,10 +13,11 @@ router = APIRouter(prefix="/api/readings", tags=["readings"])
 class Reading(BaseModel):
     asset_id: str = Field(min_length=1, max_length=32)
     ts: datetime | None = None
-    temperature: float
-    vibration: float
-    rpm: float
-    pressure: float
+    # Physical limits: anything outside these is a broken sensor, not a fault
+    temperature: float = Field(ge=-50, le=300)   # degrees C
+    vibration: float = Field(ge=0, le=100)       # mm/s RMS
+    rpm: float = Field(ge=0, le=20000)
+    pressure: float = Field(ge=0, le=200)        # bar
 
 
 class ReadingBatch(BaseModel):
