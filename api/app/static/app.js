@@ -110,11 +110,19 @@ async function refreshAlerts() {
     </tr>`).join("");
 }
 
+function setConnection(online) {
+  const el = document.getElementById("conn");
+  el.textContent = online ? "online" : "offline";
+  el.className = `conn ${online ? "online" : "offline"}`;
+}
+
 async function refresh() {
   try {
     await Promise.all([refreshStats(), refreshFleet(), refreshCharts(), refreshAlerts()]);
+    setConnection(true);
   } catch (err) {
     console.error(err);
+    setConnection(false);
   }
 }
 

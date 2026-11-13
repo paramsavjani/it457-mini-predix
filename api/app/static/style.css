@@ -39,6 +39,10 @@ h2 { font-size: 18px; margin: 32px 0 12px; }
 
 .deploy { text-align: right; }
 #deployment { font-weight: 600; color: var(--accent); }
+.conn { display: block; font-size: 12px; color: var(--muted); }
+.conn::before { content: "\25CF  "; }
+.conn.online { color: var(--ok); }
+.conn.offline { color: var(--bad); }
 
 .stats {
   display: grid;
