@@ -30,3 +30,16 @@ def list_alerts(
            ORDER BY ts DESC LIMIT %(limit)s""",
         {"asset": asset_id, "sev": severity, "limit": limit},
     )
+
+
+@router.get("/summary")
+def alert_summary():
+    """Alert counts per asset and severity, for a quick fleet overview."""
+    rows = db.fetch_all(
+        """SELECT asset_id, severity, count(*) AS total, max(ts) AS last_seen
+           FROM alerts GROUP BY asset_id, severity ORDER BY asset_id, severity"""
+    )
+    return {
+        "total": sum(r["total"] for r in rows),
+        "by_asset": rows,
+    }
