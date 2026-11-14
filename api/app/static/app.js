@@ -99,8 +99,16 @@ async function refreshCharts() {
 }
 
 async function refreshAlerts() {
-  const { data } = await getJSON("/api/alerts?limit=12");
-  if (!data.length) return;
+  const onlySelected = document.getElementById("only-selected").checked && selected;
+  const url = onlySelected
+    ? `/api/alerts?limit=12&asset_id=${encodeURIComponent(selected)}`
+    : "/api/alerts?limit=12";
+  const { data } = await getJSON(url);
+  if (!data.length) {
+    document.getElementById("alerts").innerHTML =
+      '<tr><td colspan="4" class="empty">No alerts yet</td></tr>';
+    return;
+  }
   document.getElementById("alerts").innerHTML = data.map(a => `
     <tr>
       <td>${new Date(a.ts).toLocaleTimeString()}</td>
@@ -125,6 +133,8 @@ async function refresh() {
     setConnection(false);
   }
 }
+
+document.getElementById("only-selected").addEventListener("change", refreshAlerts);
 
 refresh();
 setInterval(refresh, REFRESH_MS);
