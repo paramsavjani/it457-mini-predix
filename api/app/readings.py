@@ -51,11 +51,15 @@ def ingest(batch: ReadingBatch):
 def query_readings(
     asset_id: str,
     limit: int = Query(default=60, ge=1, le=1000),
+    minutes: int | None = Query(default=None, ge=1, le=1440),
 ):
+    """Latest readings for one asset, optionally only from the last N minutes."""
     rows = db.fetch_all(
         """SELECT ts, temperature, vibration, rpm, pressure FROM readings
-           WHERE asset_id = %s ORDER BY ts DESC LIMIT %s""",
-        (asset_id, limit),
+           WHERE asset_id = %(asset)s
+             AND (%(minutes)s::int IS NULL OR ts > now() - make_interval(mins => %(minutes)s::int))
+           ORDER BY ts DESC LIMIT %(limit)s""",
+        {"asset": asset_id, "minutes": minutes, "limit": limit},
     )
     return list(reversed(rows))
 
