@@ -128,6 +128,7 @@ async function refresh() {
   try {
     await Promise.all([refreshStats(), refreshFleet(), refreshCharts(), refreshAlerts()]);
     setConnection(true);
+    document.getElementById("updated").textContent = new Date().toLocaleTimeString();
   } catch (err) {
     console.error(err);
     setConnection(false);
