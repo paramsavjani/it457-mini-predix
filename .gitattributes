@@ -1,0 +1,6 @@
+*.tex linguist-documentation
+week1/** linguist-documentation
+week2/** linguist-documentation
+week3/** linguist-documentation
+final/** linguist-documentation
+docs/** linguist-documentation
